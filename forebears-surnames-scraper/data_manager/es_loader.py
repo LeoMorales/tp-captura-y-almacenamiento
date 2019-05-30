@@ -192,7 +192,7 @@ def send_to_es_phonetic():
                     data=json.dumps(data)).text)  # https://stackoverflow.com/questions/31542318/converting-a-curl-to-python-requests-put
             
 if __name__ == '__main__':
-    #send_to_es()
+    send_to_es()
     send_to_es_phonetic()
     print('Insercion finalizada')
 
