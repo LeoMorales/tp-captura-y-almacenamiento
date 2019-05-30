@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  db:
+    image: mongo
+    container_name: mongo
+    ports:
+        - 30002:27017
+    volumes:
+       - db-data:/data/db
+       - mongo-config:/data/configdb
+
+  crawler: # crawler App
+    container_name: forebears
+    build:
+      context: ./forebears-surnames-scraper
+      dockerfile: Dockerfile-crawler
+    environment: # Set ENV vars
+      - MONGODB_PORT=30002
+    volumes:
+      - forebear-logs:/forebears-crawler/logs
+    depends_on:
+      - db      
+
+  elasticsearch: # Elasticsearch Instance
+    container_name: es-search
+    #image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
+    build:
+      context: ./elasticsearch-setup
+      dockerfile: Dockerfile-es
+    volumes: # Persist ES data in seperate "esdata" volume
+      - esdata:/usr/share/elasticsearch/data
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    ports: # Expose Elasticsearch ports
+      - "9300:9300"
+      - "9200:9200"
+
+  kibana:
+    image: "docker.elastic.co/kibana/kibana:6.5.0"
+    hostname: kibana
+    ports:
+        - "5601:5601"
+    volumes:
+        - kibanadata:/usr/share/kibana/data
+        #- "./kibana.yml:/usr/share/kibana/config/kibana.yml"
+
+# Define seperate volume for Elasticsearch data and Kibana
+volumes:
+  esdata:
+  kibanadata:
+  db-data:
+  mongo-config:
+  forebear-logs:
+

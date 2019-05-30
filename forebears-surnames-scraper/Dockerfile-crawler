@@ -1,0 +1,18 @@
+# Usamos Python 3
+FROM python:3
+
+
+# Instalar los requerimientos
+COPY requirements.txt ./forebears-crawler/
+RUN pip install --no-cache-dir -r ./forebears-crawler/requirements.txt
+
+# Copiar el codigo fuente
+COPY . ./forebears-crawler/
+
+# WORK dir
+WORKDIR ./forebears-crawler
+
+# Correr el demon:
+#CMD [ "python", "./main.py"]
+CMD [ "python", "./forebears_crawl.py" ]
+

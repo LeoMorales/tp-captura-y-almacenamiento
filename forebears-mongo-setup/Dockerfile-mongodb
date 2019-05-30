@@ -1,0 +1,5 @@
+# Usamos mongodb
+FROM mongo
+COPY init.json init.json
+CMD mongoimport --port 30001 --db forebears_database --collection data_forebears --type json --file init.json --jsonArray
+
