@@ -2,8 +2,11 @@
 
 > git clone https://github.com/LeoMorales/tp-captura-y-almacenamiento.git
 > cd tp-captura-y-almacenamiento
-# docker-compose build
-# docker-compose up
+> docker-compose build
+> docker-compose up
+
+
+
 
 
 > cd tp-captura-y-almacenamiento/forebears-surnames-scraper/
